@@ -5,6 +5,7 @@ const getQuestions = async (productId) => {
   //productId should be type of string
 
   let data = await Questionlist.find({'product_id': `${productId}`});
+
   // no such product
   if (data.length === 0) {
     return undefined;
@@ -35,8 +36,6 @@ const getQuestions = async (productId) => {
       answers[id] = answersObj;
     })
 
-
-
     questionObj.reported ||= answersReported ;
     questionObj.answers = answers;
 
@@ -44,31 +43,59 @@ const getQuestions = async (productId) => {
 
   }))
 
-
   let finnalData = {
     'product_id' : data[0].product_id,
     'results': results
   }
 
   return finnalData;
+};
+
+
+const postQuestions = async (product_id, question) => {
+  try {
+    let findQuestionCount = await Questionlist.findOne().sort({'questionList.question_id' : -1});
+    let maxCount = 0;
+    findQuestionCount.questionList.forEach((item) => {
+      if (item.question_id > maxCount) {
+        maxCount = item.question_id;
+      }
+    })
+    question.question_id = maxCount + 1;
+
+    await Questionlist.updateOne({'product_id':`${product_id}`}, {$push : {
+      questionList : question }});
+
+  } catch (err) {
+    console.log('post question to database error', err)
+  }
+
+};
+
+const postAnswers = async(question_id, answer) => {
+// add answers, get id and save it into question list
+try {
+  let findAnswerCount = await Answer.findOne().sort({'id': -1});
+  let answerId = findAnswerCount.id + 1;
+  answer.id = answerId;
+  console.log('answer', answer);
+  let newAnswer = new Answer (answer);
+  console.log('get answer', newAnswer._id)
+  await newAnswer.save();
+  let getAnswerOriginId = newAnswer._id;
+  await Questionlist.updateOne({'questionList.question_id': question_id}, {$push : {
+    'questionList.$.answers_list' : getAnswerOriginId }})
+
+} catch (err) {
+  console.log('post answer to database error');
 }
 
-// const getAnswers =async (answerId) => {
-//   return await Answer.find({_id : `${answerId}`});
-// }
+}
 
-// const postQuestions = () => {
+const reportOrMarkAsHelpful = () => {
 
-// }
-
-// const postAnswers = () => {
-
-// }
-
-// const reportOrMarkAsHelpful = () => {
-
-// }
+}
 
 // module.exports = {getQuestions, getAnswers, postQuestions, postAnswers, reportOrMarkAsHelpful}
 
-module.exports = {getQuestions};
+module.exports = {getQuestions, postQuestions, postAnswers};
