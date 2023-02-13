@@ -46,7 +46,7 @@ jest.mock("../db/index.js", () => ({
   Answer: MockAnswer
 }))
 
-// const supertest = require("supertest");
+
 const {getQuestions, postQuestions, postAnswers} = require("../server/models/index.js");
 
 
@@ -81,10 +81,6 @@ describe('server model test', () => {
     expect(result).toEqual(getData);
   });
 
-  // it ('response to path /', async() => {
-  //   const response = await supertest(app).get('/');
-  //   expect(response.statusCode).toBe(200);
 
-  // });
 
 })

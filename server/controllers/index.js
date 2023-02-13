@@ -26,7 +26,7 @@ const postQuestionsFunction = async (req, res) => {
     answers_list: []
   };
   try {
-    await postQuestions(product_id, postData);
+    await postQuestions(123);
     res.send('post question success');
   } catch (err) {
     console.log('post error', err);
