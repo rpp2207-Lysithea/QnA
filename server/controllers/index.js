@@ -1,7 +1,8 @@
 const {getQuestions, postQuestions, postAnswers} = require('../models/index.js');
 
 const getQuestionsFunction = async (req, res) => {
-  let id = `${req.params.id}`;
+  let id = `${req.query.product_id}`;
+  // console.log(id)
   try {
     let data = await getQuestions(id);
     res.send(data);

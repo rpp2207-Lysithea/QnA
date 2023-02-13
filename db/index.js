@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
   question_helpfulness: Number,
   reported: Boolean,
   answers_list: [{type: mongoose.Schema.Types.ObjectId, ref: "Answer"}]
-})
+},{ _id : false })
 
 
 const questionListSchema = new mongoose.Schema( {

@@ -1,4 +1,4 @@
-var qnaData = {
+const qnaData = {
   qData: {
     'product_id': '71704',
     'results': [
@@ -131,5 +131,146 @@ var qnaData = {
     ]
   }
 };
+const postAnswer = {
+  id: 1,
+  body: 'unit test post answer',
+  date: '2023-02-12T04:39:33.219+00:00',
+  answerer_name: 'Debra',
+  helpfulness: 0,
+  reported: false,
+  photos: []
+};
 
-export default qnaData;
+const question_id = 1;
+const product_id = 71698;
+
+const questionList = {
+  product_id: '71698',
+  questionList: [ {
+    question_id: 1,
+    question_body: 'unit test post question',
+    question_date: '2023-02-12T04:36:55.128Z',
+    asker_name: 'Debra',
+    question_helpfulness: 0,
+    reported: false,
+    answers_list: [],
+}
+]
+};
+const postQuestion = {
+    question_body: 'questionlist unit test1',
+    question_date: '2023-02-12T04:36:55.128Z',
+    asker_name: 'Debra',
+    question_helpfulness: 0,
+    reported: false,
+    answers_list: []
+}
+const newQuestion = {
+  question_body: 'questionlist unit test1',
+  question_date: '2023-02-12T04:36:55.128Z',
+  asker_name: 'Debra',
+  question_helpfulness: 0,
+  reported: false,
+  answers_list: [],
+  question_id:2
+}
+const mockQuestionList = [
+  {
+    _id: '63d8abe64d9b9a47aa20acc8',
+    questionList: [
+      {
+        asker_name: 'Joseph_Ortiz4',
+        question_id: 252167,
+        question_body: 'Ut sit et eum est.',
+        question_date: "2020-11-08T05:00:55.517Z",
+        question_helpfulness: 9,
+        reported: false,
+        answers_list: []
+      },
+      {
+        question_id: 3518964,
+        question_body: 'questionlis-test1',
+        question_date: '2023-02-03T04:36:55.128Z',
+        asker_name: 'Debra',
+        question_helpfulness: 0,
+        reported: false,
+        answers_list: [
+          '63dec095c4a91c0066bb0ac9',
+          '63dc9360913a40e07b26d1e1',
+        ]
+      }
+    ],
+    product_id: '71698'
+  }
+]
+const mockAnswer = {
+  '63dec095c4a91c0066bb0ac9' : [{
+  _id: '63dec095c4a91c0066bb0ac9',
+  id: 6879311,
+  body: 'test2',
+  date: '2023-02-04T20:31:17.190Z',
+  answerer_name: 'vaan',
+  helpfulness: 0,
+  reported: false,
+  photos: [],
+  }],
+'63dc9360913a40e07b26d1e1' : [{
+    _id: '63dc9360913a40e07b26d1e1',
+    id: 6879310,
+    body: 'answer-test2',
+    date: '2023-02-03T04:53:52.864Z',
+    answerer_name: 'Debra',
+    helpfulness: 0,
+    reported: false,
+    photos: [],
+  }]
+}
+const getData = {
+  "product_id": "71698",
+  "results": [
+    {
+      "answers": {},
+      "asker_name":"Joseph_Ortiz4",
+      "question_body": "Ut sit et eum est.",
+      "question_date": "2020-11-08T05:00:55.517Z",
+      "question_helpfulness": 9,
+      "question_id": 252167,
+      "reported": false
+    },
+   {
+    "answers": {
+      "6879310": {
+        "_id": "63dc9360913a40e07b26d1e1",
+        "answerer_name": "Debra",
+        "body": "answer-test2",
+        "date": "2023-02-03T04:53:52.864Z",
+        "helpfulness": 0,
+        "id": 6879310,
+        "photos": [],
+        "reported": false
+      },
+      "6879311": {
+        "_id": "63dec095c4a91c0066bb0ac9",
+        "answerer_name": "vaan",
+        "body": "test2",
+        "date": "2023-02-04T20:31:17.190Z",
+        "helpfulness": 0,
+        "id": 6879311,
+        "photos": [],
+        "reported": false
+      }},
+      "asker_name": "Debra",
+      "question_body": "questionlis-test1",
+      "question_date": "2023-02-03T04:36:55.128Z",
+      "question_helpfulness": 0, "question_id": 3518964,
+      "reported": false
+    }
+  ]}
+module.exports = {postAnswer,
+  question_id,
+  questionList,
+  postQuestion,
+  product_id,newQuestion,
+  mockQuestionList,
+  mockAnswer,
+  getData};
