@@ -84,6 +84,9 @@ try {
   let getAnswerOriginId = newAnswer._id;
   await Questionlist.updateOne({'questionList.question_id': question_id}, {$push : {
     'questionList.$.answers_list' : getAnswerOriginId }})
+  //for update cache
+  let data = await Questionlist.findOne({'questionList.question_id': question_id});
+  return data.product_id;
 
 } catch (err) {
   console.log('post answer to database error',err);

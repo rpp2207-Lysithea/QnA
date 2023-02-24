@@ -1,16 +1,59 @@
 const {getQuestions, postQuestions, postAnswers} = require('../models/index.js');
+//for cache set up
+const redis = require('redis');
+const client = redis.createClient();
+(async () => {
+    await client.connect();
+})();
 
+client.on('ready', () => {
+    console.log("Connected!");
+});
+client.on('error', err => console.log('Redis Client Error', err));
+
+//use cache in get query
 const getQuestionsFunction = async (req, res) => {
   let id = `${req.query.product_id}`;
   // console.log(id)
-  try {
-    let data = await getQuestions(id);
+  const cacheKey = id;
+ try {
+    const cachedData = await client.get(cacheKey);
+
+    if (cachedData !== null) {
+     // console.log('Using cached data');
+      res.send(JSON.parse(cachedData));
+      return;
+    }
+
+    //console.log('Fetching new data');
+    // If data is not cached, fetch new data from MongoDB and cache it for next time
+    const data = await getQuestions(id);
+    if( data === undefined) {
+        res.send(data);
+        return;
+    }
+    await client.set(cacheKey, JSON.stringify(data), 'EX', 360); // cache for 60 seconds
+
     res.send(data);
   } catch (err) {
-    console.log('get questions error', err);
+    console.error(err);
   }
-
 };
+
+//before cache
+// const getQuestionsFunction = async (req, res) => {
+//   let id = `${req.query.product_id}`;
+//   const cacheKey = id;
+//   console.log(id)
+//   try {
+//     let data = await getQuestions(id);
+//     res.send(data);
+//   } catch (err) {
+//     console.log('get questions error', err);
+//   }
+
+// };
+
 
 const postQuestionsFunction = async (req, res) => {
   let data = req.body;
@@ -26,8 +69,9 @@ const postQuestionsFunction = async (req, res) => {
     answers_list: []
   };
   try {
-    await postQuestions(123);
-    res.send('post question success');
+    await postQuestions(product_id, postData);
+    await client.del(product_id);
+    res.send('post question success and cache invalidated');
   } catch (err) {
     console.log('post error', err);
   }
@@ -46,8 +90,10 @@ const postAnswersFunction = async (req, res) => {
     photos: data.photos
   };
   try {
-    await postAnswers(question_id, postData);
-    res.send('post answer success');
+    let product_id = await postAnswers(question_id, postData);
+    await client.del(product_id);
+
+    res.send('post answer success and cache invalidated');
   } catch (err) {
     console.log('post error', err);
   }
